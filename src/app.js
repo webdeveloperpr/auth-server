@@ -1,7 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const routes = require('./routes/auth');
+const mongoose = require('mongoose');
 const passport = require('passport');
+const bodyParser = require('body-parser');
+
+const routes = require('./routes/auth');
 const strategies = require('./passport');
 
 // Create the app.
@@ -10,7 +12,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
-strategies(app, passport);
-routes(app, passport);
+((User) => {
+  strategies(User, passport);
+  routes(app, passport, { User });
+})(mongoose.model('user'));
+
 
 module.exports = app;
