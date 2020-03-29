@@ -1,4 +1,4 @@
-# AUTH API
+# auth-server
 
 ## API
 
@@ -89,6 +89,3 @@ $ docker exec -it mongodb bash
 ```
 $ npm start
 ```
-
-
- # auth-server

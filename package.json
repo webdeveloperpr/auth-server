@@ -1,0 +1,33 @@
+{
+  "name": "auth-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "source ./scripts/load-env .env && mocha",
+    "test:watch": "source ./scripts/load-env .env && mocha --watch",
+    "dev": "source ./scripts/load-env .env && nodemon ./src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.5.5",
+    "mongoose": "^5.9.6",
+    "nodemon": "^2.0.2",
+    "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/register": "^7.9.0",
+    "expect": "^25.2.3",
+    "mocha": "^7.1.1",
+    "supertest": "^4.0.2"
+  }
+}
