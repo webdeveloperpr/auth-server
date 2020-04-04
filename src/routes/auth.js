@@ -1,13 +1,9 @@
-const routes = (app, passport, { User }) => {
-  // invalidate the JWT token.
-  app.post('/login', (req, res, next) => passport.authenticate('local', (err, user) => {
-    err ? res.status(400).json(err) : res.status(200).json(user);
-  })(req, res, next));
+const AuthController = require('../controllers/auth');
 
-  app.post('/register', async (req, res) => {
-    const user = await User(req.body).save();
-    if (user) res.json(user);
-    else res.status(400).json();
-  });
+const routes = (app, models) => {
+  app.post('/sign-in', AuthController.signIn(models));
+  app.post('/register', AuthController.register(models));
+  app.all('/jwt', AuthController.jwt(models));
 };
+
 module.exports = routes;

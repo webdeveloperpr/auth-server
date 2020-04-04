@@ -89,3 +89,23 @@ $ docker exec -it mongodb bash
 ```
 $ npm start
 ```
+
+## API routes
+
+`/signin`
+  
+  This route should accept a username and password. If the username and password
+  exist then create a token for the user, and return the token.
+
+`/register`
+
+  This route should accept an email and password. If the email and password are
+  valid, create the user, create a token and return the token.
+
+  `/*`
+
+  This route should verify that the token is valid.
+
+  If it is valid then proxy the request to it's destination.
+
+  If not valid then return return 403 with error message.
