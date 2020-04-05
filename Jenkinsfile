@@ -1,11 +1,28 @@
 pipeline {
-    agent { docker { image 'node:12.16.1' } }
+    agent { 
+      docker { 
+        image 'node:12.16.1' 
+      } 
+    }
     stages {
+        stage('checkout') {
+            steps {
+                sh 'checking out repository'
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'testing repository'
+            }
+        }
         stage('build') {
             steps {
-                sh 'npm --version'
-                sh 'echo test 2'
-                sh 'echo test 3'
+                sh 'Building repository'
+            }
+        }
+        stage('deploy') {
+            steps {
+                sh 'deploying repository'
             }
         }
     }
