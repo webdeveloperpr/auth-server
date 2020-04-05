@@ -5,6 +5,7 @@ pipeline {
             steps {
                 sh 'npm --version'
                 sh 'echo test 2'
+                sh 'echo test 3'
             }
         }
     }
