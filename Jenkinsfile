@@ -7,22 +7,22 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                sh 'checking out repository'
+                sh 'echo checking out repository'
             }
         }
         stage('test') {
             steps {
-                sh 'testing repository'
+                sh 'echo testing repository'
             }
         }
         stage('build') {
             steps {
-                sh 'Building repository'
+                sh 'echo Building repository'
             }
         }
         stage('deploy') {
             steps {
-                sh 'deploying repository'
+                sh 'echo deploying repository'
             }
         }
     }
