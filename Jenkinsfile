@@ -1,29 +1,57 @@
 pipeline {
-    agent { 
-      docker { 
-        image 'node:12.16.1' 
-      } 
+  agent {
+    docker {
+      image 'node:lts-stretch'
     }
-    stages {
-        stage('checkout') {
-            steps {
-                sh 'echo checking out repository'
-            }
-        }
-        stage('test') {
-            steps {
-                sh 'echo testing repository'
-            }
-        }
-        stage('build') {
-            steps {
-                sh 'echo Building repository'
-            }
-        }
-        stage('deploy') {
-            steps {
-                sh 'echo deploying repository'
-            }
-        }
+  }
+  environment {
+    HOME = '.'
+  }
+  stages {
+    stage('install') {
+      steps {
+        sh 'npm install'
+      }
     }
+    stage('test') {
+      steps {
+        sh 'npm run test'
+      }
+    }
+    stage('build') {
+      when {
+        branch 'master'
+      }
+      steps {
+        sh 'echo Building repository'
+      }
+    }
+    stage('store') {
+      when {
+        branch 'master'
+      }
+      steps {
+        sh 'echo storing assets in S3'
+      }
+    }
+    stage('deploy') {
+      when {
+        branch 'master'
+      }
+      steps {
+        echo 'Deploying to prod server'
+      }
+    }
+  }
+  post {
+    always {
+      echo 'Done!'
+    }
+    success {
+      echo 'Done!'
+    }
+    failure {
+      echo 'Done!'
+    }
+  }
 }
