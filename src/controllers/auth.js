@@ -4,7 +4,9 @@ const TOKEN_MINUTES = 0 * (60 * 1000);
 const TOKEN_HOURS = 1 * (60 * 60 * 1000);
 const TOKEN_EXPIRATION = TOKEN_SECONDS + TOKEN_MINUTES + TOKEN_HOURS;
 
-const signIn = ({ User }) => async (req, res) => {
+const AuthController = {};
+
+AuthController.signIn = ({ User }) => async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -21,7 +23,8 @@ const signIn = ({ User }) => async (req, res) => {
     }
 
     const passwordMatches = user.comparePassword(password);
-
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
     if (passwordMatches) {
       // Allow custom token options to be passed from tests, when 
       // not in production mode
@@ -30,7 +33,11 @@ const signIn = ({ User }) => async (req, res) => {
         : { expiresIn: TOKEN_EXPIRATION };
 
       return token
-        .createToken({ email: user.email }, options)
+        .createToken({
+          id: user._id,
+          email: user.email,
+          refresh: 0,
+        }, options)
         .then(userToken => {
           // user exists and password matches
           res
@@ -38,7 +45,7 @@ const signIn = ({ User }) => async (req, res) => {
             .status(200)
             .json({
               message: 'user signed in!',
-              user,
+              user: userWithoutPassword,
               error: {
                 email: '',
                 password: '',
@@ -62,7 +69,6 @@ const signIn = ({ User }) => async (req, res) => {
     // user exists but password does not match
     return res.status(401).json({
       message: 'password error',
-      user,
       error: {
         email: '',
         password: 'invalid password',
@@ -72,7 +78,7 @@ const signIn = ({ User }) => async (req, res) => {
   } catch (err) {
     // unknown error (probably db)
     return res.status(401).json({
-      message: `unknown error.`,
+      message: `unknown error. ${err}`,
       error: {
         email: '',
         password: '',
@@ -81,7 +87,7 @@ const signIn = ({ User }) => async (req, res) => {
   }
 };
 
-const register = ({ User }) => async (req, res) => {
+AuthController.register = ({ User }) => async (req, res) => {
   try {
     const user = await User(req.body).save();
     if (user) res.json(user);
@@ -91,10 +97,10 @@ const register = ({ User }) => async (req, res) => {
   }
 };
 
-// Update the token again so it's good for 1 hr.
-const refreshToken = async (req, res, decodedToken, tokenOptions) => {
+AuthController.refreshToken = async (req, res, decodedToken, tokenOptions) => {
   const refresh = decodedToken.payload.refresh ? Number(decodedToken.payload.refresh) + 1 : 0
   const newToken = await token.createToken({
+    id: decodedToken.payload.id,
     email: decodedToken.payload.email,
     refresh,
   }, tokenOptions)
@@ -104,8 +110,9 @@ const refreshToken = async (req, res, decodedToken, tokenOptions) => {
   return newToken;
 }
 
-const jwt = ({ User }) => async (req, res) => {
+AuthController.jwt = ({ User }) => async (req, res) => {
   const userToken = req.cookies.token;
+
   const options = process.env.NODE_ENV !== 'production'
     ? req.body.tokenOptions || { expiresIn: TOKEN_EXPIRATION }
     : { expiresIn: TOKEN_EXPIRATION };
@@ -114,15 +121,20 @@ const jwt = ({ User }) => async (req, res) => {
 
   try {
     const decodedToken = await token.verifyToken(userToken);
-    await refreshToken(req, res, decodedToken, options);
-    res.status(200).json();
+
+    const user = {
+      id: decodedToken.payload.id,
+      email: decodedToken.payload.email,
+    }
+
+    await AuthController.refreshToken(req, res, decodedToken, options);
+
+    return res.status(200).json({ user });
+
   } catch (err) {
+
     res.status(403).json();
   };
 };
 
-module.exports = {
-  jwt,
-  signIn,
-  register,
-};
+module.exports = AuthController;

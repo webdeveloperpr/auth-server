@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const app = require('./app');
 require('./database');
+const app = require('./app');
 
 mongoose.connection
   .once('open', () => {

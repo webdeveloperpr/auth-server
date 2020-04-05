@@ -8,7 +8,11 @@ const MONGO_DB_URL = [
 ].join('');
 
 // Connect to the docker database.
-mongoose.connect(MONGO_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(MONGO_DB_URL, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 
 

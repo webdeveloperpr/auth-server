@@ -18,13 +18,12 @@ try {
       unique: true,
       required: [true, 'can\'t be blank'],
       match: [/\S+@\S+\.\S+/, 'is invalid'],
-      index: true
     },
     lastName: {
       type: String,
       required: [true, 'can\'t be blank'],
     },
-    password: {
+    password: {    
       type: String,
       required: [true, 'can\'t be blank'],
       minlength: [8, 'has less than 8 characters'],
