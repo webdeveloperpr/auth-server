@@ -1,3 +1,5 @@
+echo "sourcing env vars"
+
 # Source env file
 set -o allexport
 . $1
