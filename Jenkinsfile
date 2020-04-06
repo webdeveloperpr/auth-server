@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('install') {
       steps {
-        sh 'npm install'
+        sh 'echo installing'
       }
     }
     stage('deploy') {
@@ -43,20 +43,16 @@ pipeline {
         )
       }
     }
-    steps {
-      echo 'Deploying to prod server'
+  }
+  post {
+    always {
+      echo 'Done!'
+    }
+    success {
+      echo 'Done!'
+    }
+    failure {
+      echo 'Done!'
     }
   }
-}
-post {
-  always {
-    echo 'Done!'
-  }
-  success {
-    echo 'Done!'
-  }
-  failure {
-    echo 'Done!'
-  }
-}
 }
