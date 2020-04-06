@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "source ./scripts/load-env .env && mocha",
-    "start": "source ./scripts/load-env .env && node ./src/index.js",
-    "test:watch": "source ./scripts/load-env .env && mocha --watch",
-    "dev": "source ./scripts/load-env .env && nodemon ./src/index.js"
+    "test": ". ./scripts/load-env .env && mocha",
+    "start": ". ./scripts/load-env .env && node ./src/index.js",
+    "test:watch": ". ./scripts/load-env .env && mocha --watch",
+    "dev": ". ./scripts/load-env .env && nodemon ./src/index.js"
   },
   "author": "",
   "license": "ISC",
