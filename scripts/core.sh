@@ -28,8 +28,7 @@ function getEnvFile() {
     ENV_FILE=$DEV_ENV_FILE
     echo "loading dev env"
   else
-    echo "No environment file found exiting."
-    exit 1
+    echo "No environment file found."
   fi
 }
 
