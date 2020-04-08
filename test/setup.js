@@ -25,9 +25,10 @@ before(done => {
   mongoose.connection
     .once('open', () => {
       console.log('mongodb connection opened.');
+      done();
     })
-    .once('close', () => {
-      console.log('mongodb connection closed.');
+    .on('disconnecting', () => {
+      console.log('closing mongodb connection.');
     })
     .on('error', error => {
       console.warn('Warning', error);

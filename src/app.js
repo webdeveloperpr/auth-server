@@ -21,8 +21,6 @@ app.use(bodyParser.json());
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
 
-console.log('MONGO_DB_URL', process.env['MONGO_DB_URL']);
-
 ((User) => {
   routes(app, { User });
 })(mongoose.model('user'));
