@@ -1,13 +1,4 @@
-require('@babel/register');
-const mongoose = require('mongoose');
-require('../src/database');
-require('../src/models/user');
 
-// global props
-global.app = require('../src/app');
-global.expect = require('expect');
-global.request = require('supertest');
-global.mongoose = mongoose;
 // connecting: Emitted when Mongoose starts making its initial connection to the MongoDB server
 // connected: Emitted when Mongoose successfully makes its initial connection to the MongoDB server
 // open: Equivalent to connected
@@ -19,9 +10,25 @@ global.mongoose = mongoose;
 // fullsetup: Emitted when you're connecting to a replica set and Mongoose has successfully connected to the primary and at least one secondary.
 // all: Emitted when you're connecting to a replica set and Mongoose has successfully connected to all servers specified in your connection string.
 // reconnectFailed: Emitted when you're connected to a standalone server and Mongoose has run out of reconnectTries. The MongoDB driver will no longer attempt to reconnect after this event is emitted. This event will never be emitted if you're connected to a replica set.
+require('@babel/register');
+const mongoose = require('mongoose');
+require('../src/database');
+require('../src/models/user');
+
+// global props
+global.app = require('../src/app');
+global.expect = require('expect');
+global.request = require('supertest');
+global.mongoose = mongoose;
+
 before(done => {
   mongoose.connection
-    .once('open', () => done())
+    .once('open', () => {
+      console.log('mongodb connection opened.');
+    })
+    .once('close', () => {
+      console.log('mongodb connection closed.');
+    })
     .on('error', error => {
       console.warn('Warning', error);
       done();
@@ -35,3 +42,7 @@ beforeEach(done => {
     .catch(() => done());
 });
 
+// Close the connection so that Mocha doesn't hang after thes tests run.
+after(() => {
+  mongoose.connection.close()
+});

@@ -2,16 +2,14 @@ version: "3"
 services:
   auth:
     container_name: auth
-    restart: always
+    # restart: always
     build: .
     ports:
       - "3010:3010"
     links:
       - mongo
-    environment:
-      - MONGO_DB_URL=mongodb://mongo:27017/auth
-      - JWT_SECRET_KEY=mr2iGc91cF9YOyAG2cJI/NHVf+ieWZKlGINDCvoKjL6abafDEhfN8kRw/Dyf92+Xpj+/tPAwoUrwkZb3pzaMp0LNr9PKM/JwKq7XRiX957vrq7B+Ivcc4FWBfO6jSF8fbnau2aU/qjpm8BMLz8Sf8s13ZL5GknIAKmDC2+RCOTCo5gLfsue4gEj2HbCe2peuW5Ttlb/WojtD9VIPBnREKjihHcJUN6qn9ODjWoNuKpl9XKea9eZeXDChZ6ibO0WaeGowMoi0tmONe+/o1nic11PZ3u6L4BknrmudwXFc8NaFTTbN3GZLs9fk8oyS4MsmxSFUg8VarwM/eBu8ego6Iw==
-      - PORT=3010
+    env_file:
+      - ${ENV_FILE}
   mongo:
     container_name: mongo
     image: mongo
