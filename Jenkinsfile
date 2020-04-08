@@ -21,11 +21,6 @@ pipeline {
         sh './scripts/docker-test.sh'
       }
     }
-    stage('tear down') {
-      steps {
-        sh './scripts/docker-down.sh'
-      }
-    }
   }
   post {
     always {
