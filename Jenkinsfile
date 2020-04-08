@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('environment') {
       steps {
-        // Create the file to 
+        // Use secrets manager here in the future
         sh  ''' 
             echo JWT_SECRET_KEY=$JWT_SECRET_KEY >> ./env/.test.env
             echo JWT_SECRET_KEY=$MONGO_DB_URL >> ./env/.test.env

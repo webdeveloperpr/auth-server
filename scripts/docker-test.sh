@@ -7,4 +7,4 @@ ENV='test'
 . ./scripts/docker-up.sh
 
 # Execute the tests inside the auth container.
-docker exec -it auth bash -c "npm run test"
+docker exec auth bash -c "npm run test"
