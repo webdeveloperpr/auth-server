@@ -6,6 +6,16 @@ pipeline {
     string(defaultValue: '3010', description: 'The port the application will be using to start.', name: 'PORT', trim: false)
   }
   stages {
+    stage('environment') {
+      steps {
+        // Create the file to 
+        sh  ''' 
+            echo JWT_SECRET_KEY=$JWT_SECRET_KEY >> ./env/.test.env
+            echo JWT_SECRET_KEY=$MONGO_DB_URL >> ./env/.test.env
+            echo JWT_SECRET_KEY=$PORT >> ./env/.test.env
+            '''
+      }
+   }
     stage('test') {
       steps {
         sh './scripts/docker-test.sh'
