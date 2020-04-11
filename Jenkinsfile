@@ -10,6 +10,7 @@ pipeline {
       steps {
         // Use secrets manager here in the future
         sh  ''' 
+        
             echo JWT_SECRET_KEY=$JWT_SECRET_KEY >> ./env/.test.env
             echo MONGO_DB_URL=$MONGO_DB_URL >> ./env/.test.env
             echo PORT=$PORT >> ./env/.test.env
