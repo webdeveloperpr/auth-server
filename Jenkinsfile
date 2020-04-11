@@ -48,7 +48,7 @@ pipeline {
    }
     stage('test') {
       steps {
-      
+
         sh './scripts/docker-test.sh'        
       }
     }
@@ -67,7 +67,7 @@ pipeline {
                 sshTransfer(
                   cleanRemote: false, 
                   excludes: '', 
-                  execCommand: 'sudo rm -rf ~/auth-server', 
+                  execCommand: 'sudo rm -rf $HOME/auth-server', 
                   execTimeout: 120000, 
                   flatten: false, 
                   makeEmptyDirs: false, 
@@ -81,13 +81,13 @@ pipeline {
                 sshTransfer(
                   cleanRemote: false, 
                   excludes: '', 
-                  execCommand: 'cd ~/auth-server && ENV=prod ./scripts/docker-up.sh ', 
+                  execCommand: 'cd $HOME/auth-server && ENV=prod ./scripts/docker-up.sh ', 
                   execTimeout: 120000, 
                   flatten: false, 
                   makeEmptyDirs: false, 
                   noDefaultExcludes: false, 
                   patternSeparator: '[, ]+', 
-                  remoteDirectory: '~/auth-server', 
+                  remoteDirectory: '', 
                   remoteDirectorySDF: false, 
                   removePrefix: '', 
                   sourceFiles: '*'
