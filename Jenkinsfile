@@ -81,7 +81,7 @@ pipeline {
                 sshTransfer(
                   cleanRemote: false, 
                   excludes: '', 
-                  execCommand: 'cd $HOME/auth-server && ENV=prod ./scripts/docker-up.sh ', 
+                  execCommand: 'mkdir $HOME/auth-server && cd $HOME/auth-server && ENV=prod ./scripts/docker-up.sh', 
                   execTimeout: 120000, 
                   flatten: false, 
                   makeEmptyDirs: false, 
