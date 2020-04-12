@@ -54,17 +54,17 @@ pipeline {
             '''
       }
    }
-    // stage('test') {
-    //   steps {
+    stage('test') {
+      steps {
 
-    //     sh './scripts/docker-test.sh'        
-    //   }
-    // }
-    // stage('cleanup') {
-    //   steps {
-    //     sh './scripts/docker-down.sh'        
-    //   }
-    // }
+        sh './scripts/docker-test.sh'        
+      }
+    }
+    stage('cleanup') {
+      steps {
+        sh './scripts/docker-down.sh'        
+      }
+    }
     stage('deploy') {
       steps {
         sh """
