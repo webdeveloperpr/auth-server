@@ -79,6 +79,8 @@ pipeline {
           echo "Deployment complete!"
         """        
       }
+    }
+  }
   post {
     always {
       echo 'Cleaning the workspace.'
