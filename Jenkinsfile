@@ -1,5 +1,12 @@
 pipeline {
   agent any
+  environment {
+    PROJECT_DIR='auth-server'
+    TEMP_DIR='/tmp/auth-server'
+    HOST='admin@dev.sandbox6.com'
+    FROM='./'
+    TO='admin@dev.sandbox6.com:/tmp/auth-server'
+  }
   parameters {
     // Test secrets
     string(
@@ -60,12 +67,6 @@ pipeline {
     stage('deploy') {
       steps {
         sh """
-          PROJECT_DIR=auth-server
-          TEMP_DIR=/tmp/$PROJECT_DIR
-          HOST=admin@dev.sandbox6.com
-          FROM=./
-          TO=$HOST:$TEMP_DIR
-
           # Copy source files to destination via SSH.
           scp -r $FROM $TO 
 
