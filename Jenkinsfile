@@ -59,49 +59,26 @@ pipeline {
     }
     stage('deploy') {
       steps {
-        sshPublisher(
-          publishers: [
-            sshPublisherDesc(
-              configName: 'dev', 
-              transfers: [
-                sshTransfer(
-                  cleanRemote: false, 
-                  excludes: '', 
-                  execCommand: 'sudo rm -rf $HOME/auth-server', 
-                  execTimeout: 120000, 
-                  flatten: false, 
-                  makeEmptyDirs: false, 
-                  noDefaultExcludes: false, 
-                  patternSeparator: '[, ]+', 
-                  remoteDirectory: '', 
-                  remoteDirectorySDF: false, 
-                  removePrefix: '', 
-                  sourceFiles: ''
-                ), 
-                sshTransfer(
-                  cleanRemote: false, 
-                  excludes: '', 
-                  execCommand: 'mkdir $HOME/auth-server && cd $HOME/auth-server && ENV=prod ./scripts/docker-up.sh', 
-                  execTimeout: 120000, 
-                  flatten: false, 
-                  makeEmptyDirs: false, 
-                  noDefaultExcludes: false, 
-                  patternSeparator: '[, ]+', 
-                  remoteDirectory: '', 
-                  remoteDirectorySDF: false, 
-                  removePrefix: '', 
-                  sourceFiles: '*'
-                )
-              ], 
-              usePromotionTimestamp: false, 
-              useWorkspaceInPromotion: false, 
-              verbose: false
-            )
-          ]
-        )
+        sh """
+          PROJECT_DIR=auth-server
+          TEMP_DIR=/tmp/$PROJECT_DIR
+          HOST=admin@dev.sandbox6.com
+          FROM=./
+          TO=$HOST:$TEMP_DIR
+
+          # Copy source files to destination via SSH.
+          scp -r $FROM $TO 
+
+          ssh $HOST "mkdir -p $TEMP_DIR" &&
+            ssh -t $HOST "  
+            rm -rf ~/$PROJECT_DIR;
+            cp -r $TEMP_DIR ~/;
+            rm -rf $TEMP_DIR;
+            exit;
+          "
+          echo "Deployment complete!"
+        """        
       }
-    }
-  }
   post {
     always {
       echo 'Cleaning the workspace.'
