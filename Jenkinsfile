@@ -5,6 +5,7 @@ pipeline {
     TEMP_DIR='/tmp/auth-server'
     HOST='admin@dev.sandbox6.com'
     FROM='./'
+    PROXY='jenkins@jenkins.sandbox6.com'
     TO='admin@dev.sandbox6.com:/tmp/auth-server'
   }
   parameters {
@@ -53,28 +54,30 @@ pipeline {
             '''
       }
    }
-    stage('test') {
-      steps {
+    // stage('test') {
+    //   steps {
 
-        sh './scripts/docker-test.sh'        
-      }
-    }
-    stage('cleanup') {
-      steps {
-        sh './scripts/docker-down.sh'        
-      }
-    }
+    //     sh './scripts/docker-test.sh'        
+    //   }
+    // }
+    // stage('cleanup') {
+    //   steps {
+    //     sh './scripts/docker-down.sh'        
+    //   }
+    // }
     stage('deploy') {
       steps {
         sh """
           # Copy source files to destination via SSH.
-          scp -r $FROM $TO 
+          scp -r $FROM $TO
 
           ssh $HOST "mkdir -p $TEMP_DIR" &&
-            ssh -t $HOST "  
+            ssh -tt $HOST "  
             rm -rf ~/$PROJECT_DIR;
             cp -r $TEMP_DIR ~/;
             rm -rf $TEMP_DIR;
+            cd $PROJECT_DIR; 
+            ./scripts/docker-up.sh;
             exit;
           "
           echo "Deployment complete!"
