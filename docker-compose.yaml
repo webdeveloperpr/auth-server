@@ -1,4 +1,7 @@
 version: "3"
+networks:
+  backend:
+    driver: "bridge"
 services:
   auth:
     container_name: auth
@@ -8,6 +11,8 @@ services:
       - "3010:3010"
     links:
       - mongo
+    networks: 
+      - backend
     env_file:
       - ${ENV_FILE}
   mongo:
@@ -15,3 +20,5 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+    networks: 
+      - backend
