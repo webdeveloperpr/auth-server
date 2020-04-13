@@ -56,7 +56,6 @@ pipeline {
    }
     stage('test') {
       steps {
-
         sh './scripts/docker-test.sh'        
       }
     }

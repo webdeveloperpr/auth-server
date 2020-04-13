@@ -3,6 +3,7 @@
 
 # We export this so that the dockerfile can load the correc env.
 
+
 # Remove Previous Stack
 docker-compose -p $COMPOSE_ID rm -f
 
