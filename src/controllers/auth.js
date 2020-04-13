@@ -93,7 +93,7 @@ AuthController.register = ({ User }) => async (req, res) => {
     if (user) res.json(user);
     else res.status(400).json({ error: 'Error creating user' });
   } catch (err) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: err });
   }
 };
 
