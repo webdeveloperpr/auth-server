@@ -4,7 +4,7 @@ pipeline {
     PROJECT_DIR='auth-server'
     TEMP_DIR='/tmp/auth-server'
     HOST='admin@dev.sandbox6.com'
-    FROM='./'
+    FROM='$(pwd)'
     PROXY='jenkins@jenkins.sandbox6.com'
     TO='admin@dev.sandbox6.com:/tmp/auth-server'
   }
