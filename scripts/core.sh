@@ -1,5 +1,5 @@
 # Id if the container
-COMPOSE_ID=app
+COMPOSE_ID=auth
 
 # Gets the enviroment variables from the configuration passed
 function getEnvFile() {
