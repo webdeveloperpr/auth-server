@@ -76,7 +76,7 @@ pipeline {
             cp -r $TEMP_DIR ~/;
             rm -rf $TEMP_DIR;
             cd $PROJECT_DIR; 
-            ./scripts/docker-up.sh;
+            ./scripts/start.sh;
             exit;
           "
           echo "Deployment complete!"
